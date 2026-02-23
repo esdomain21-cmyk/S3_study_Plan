@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 SME Study Plan 📦</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a0a0a; color: #e0e0e0; line-height: 1.7; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; font-size: 2.2rem; margin-bottom: 10px; color: #ff9900; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 30px; font-size: 1rem; }
+        .timeline-overview { background: #1a1a2e; border: 1px solid #ff990033; border-radius: 12px; padding: 25px; margin-bottom: 30px; }
+        .timeline-overview h2 { color: #ff9900; margin-bottom: 15px; font-size: 1.3rem; }
+        .timeline-overview .target { font-size: 1.1rem; color: #4ecca3; margin-bottom: 15px; font-weight: bold; }
+        .timeline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .timeline-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: #16213e; border-radius: 8px; font-size: 0.9rem; }
+        .timeline-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #ff9900; cursor: pointer; flex-shrink: 0; }
+        .timeline-item.completed { opacity: 0.5; text-decoration: line-through; }
+        .progress-bar-container { background: #1a1a2e; border: 1px solid #ff990033; border-radius: 12px; padding: 20px 25px; margin-bottom: 30px; }
+        .progress-bar-container h3 { color: #ff9900; margin-bottom: 10px; }
+        .progress-bar { width: 100%; height: 24px; background: #16213e; border-radius: 12px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ff9900, #4ecca3); border-radius: 12px; transition: width 0.5s ease; width: 0%; }
+        .progress-text { text-align: center; margin-top: 8px; color: #888; font-size: 0.9rem; }
+        .week-card { background: #1a1a2e; border: 1px solid #ffffff11; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+        .week-header { background: #16213e; padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.2s; }
+        .week-header:hover { background: #1a2744; }
+        .week-header h2 { color: #ff9900; font-size: 1.2rem; }
+        .week-header .dates { color: #4ecca3; font-size: 0.85rem; }
+        .week-header .toggle { color: #ff9900; font-size: 1.4rem; transition: transform 0.3s; }
+        .week-header .toggle.open { transform: rotate(180deg); }
+        .week-header .week-progress { color: #888; font-size: 0.85rem; margin-left: auto; margin-right: 15px; }
+        .week-content { padding: 0 25px 25px; display: none; }
+        .week-content.show { display: block; }
+        .week-goal { color: #4ecca3; font-style: italic; margin: 15px 0; padding: 10px 15px; border-left: 3px solid #4ecca3; background: #4ecca30a; border-radius: 0 8px 8px 0; }
+        .day-section { margin: 20px 0; }
+        .day-title { color: #ff9900; font-size: 1.05rem; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #ffffff11; }
+        .activity-group { margin: 12px 0; }
+        .activity-label { font-weight: bold; color: #ccc; font-size: 0.95rem; margin-bottom: 6px; }
+        .task-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; margin: 4px 0; background: #16213e; border-radius: 8px; transition: all 0.2s; cursor: pointer; }
+        .task-item:hover { background: #1a2744; }
+        .task-item.completed { opacity: 0.5; }
+        .task-item.completed .task-text { text-decoration: line-through; }
+        .task-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #ff9900; cursor: pointer; flex-shrink: 0; margin-top: 3px; }
+        .task-text { flex: 1; font-size: 0.92rem; }
+        .task-text a { color: #66b3ff; text-decoration: none; word-break: break-all; }
+        .task-text a:hover { text-decoration: underline; color: #99ccff; }
+        .key-concept { background: #1c1c3a; border-left: 3px solid #ff9900; padding: 12px 15px; margin: 8px 0; border-radius: 0 8px 8px 0; font-size: 0.92rem; }
+        .key-concept strong { color: #ff9900; }
+        .self-test { background: #1a2e1a; border-left: 3px solid #4ecca3; padding: 12px 15px; margin: 8px 0; border-radius: 0 8px 8px 0; font-size: 0.92rem; font-style: italic; color: #b0d4b0; }
+        pre { background: #0d1117; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; color: #c9d1d9; margin: 10px 0; }
+        .ongoing-section { background: #1a1a2e; border: 1px solid #4ecca333; border-radius: 12px; padding: 25px; margin-top: 30px; }
+        .ongoing-section h2 { color: #4ecca3; margin-bottom: 15px; }
+        .reset-btn { display: block; margin: 30px auto; padding: 12px 30px; background: #ff000033; color: #ff6666; border: 1px solid #ff000055; border-radius: 8px; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .reset-btn:hover { background: #ff000055; }
+        .summary-section { background: #1a1a2e; border: 1px solid #ff990033; border-radius: 12px; padding: 25px; margin: 30px 0; }
+        .summary-section h2 { color: #ff9900; margin-bottom: 15px; }
+        .summary-item { padding: 6px 0; font-size: 0.92rem; color: #bbb; }
+        .summary-item strong { color: #ff9900; }
+        @media (max-width: 600px) { .timeline-grid { grid-template-columns: 1fr; } body { padding: 10px; } .week-header { padding: 14px 18px; } .week-content { padding: 0 18px 18px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>S3 SME Study Plan 📦</h1>
+    <p class="subtitle">2 hours every morning · Weekdays only · 10 weeks · Starting Feb 24, 2026</p>
+
+    <div class="progress-bar-container">
+        <h3>Overall Progress</h3>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <p class="progress-text" id="progressText">0 / 0 tasks completed (0%)</p>
+    </div>
+
+    <div class="timeline-overview">
+        <h2>🎯 Timeline Overview</h2>
+        <p class="target">Target Completion: May 1, 2026</p>
+        <div class="timeline-grid">
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="1"> Week 1 (Feb 23-27): Foundations</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="2"> Week 2 (Mar 2-6): Storage Classes</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="3"> Week 3 (Mar 9-13): Security Pt 1</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="4"> Week 4 (Mar 16-20): Security Pt 2</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="5"> Week 5 (Mar 23-27): Replication</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="6"> Week 6 (Mar 30-Apr 3): Performance</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="7"> Week 7 (Apr 6-10): Monitoring</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="8"> Week 8 (Apr 13-17): Beyond Docs</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="9"> Week 9 (Apr 20-24): Build & Teach</div>
+            <div class="timeline-item"><input type="checkbox" class="week-check" data-week="10"> Week 10 (Apr 27-May 1): Final Review</div>
+        </div>
+    </div>
+
+    <!-- WEEK 1 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 1: Core Foundations</h2><span class="dates">Feb 23-27 · Light Start</span></div>
+            <span class="week-progress" data-week="1">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Build the mental model. No pressure. Just understand what S3 is.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Feb 23 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">What is S3: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Buckets overview: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">✍️ Notes (30 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Write down every new concept in your own words</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Draw a simple diagram of how S3 is structured</span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🔍 Explore (30 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Click around the S3 console, get familiar</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Browse the left sidebar of the docs — see the full structure</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Feb 24 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Objects overview: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingObjects.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingObjects.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Object keys: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Create your first bucket via Console</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Upload a few objects</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Play with "folders" and understand they're just prefixes</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Look at object properties (metadata, tags, storage class)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Feb 25 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (45 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">S3 consistency model: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html#ConsistencyModel" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html#ConsistencyModel</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr 15 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Install AWS CLI if you haven't</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Upload objects via CLI using <code>aws s3 cp</code> and <code>aws s3api put-object</code></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">List objects with different prefix/delimiter combos</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Understand the difference between <code>aws s3</code> (high level) and <code>aws s3api</code> (low level)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Feb 26 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Re-read Monday and Tuesday's docs FASTER — look for things you missed</span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Upload via Python Boto3 (even a simple 10-line script)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Experiment with object metadata and custom metadata</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Try tagging objects via CLI</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Feb 27 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Review & Self-Test (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Write a 1-page summary of everything you learned WITHOUT looking at notes</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Fill in gaps by re-reading what you got wrong</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="1"><span class="task-text">Watch a re:Invent S3 overview talk on YouTube (optional, relaxed)</span></div>
+                </div>
+                <div class="self-test">Quiz yourself: What's the max object size? · Max bucket count per account? · Is S3 a file system? · What's the S3 ARN format? · What changed about consistency in 2020? · Can you rename an object?</div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">🔑 Key Concepts to Master This Week</div>
+                <div class="key-concept"><strong>Bucket naming rules</strong> — global namespace, DNS-compliant, can't be reused after deletion immediately</div>
+                <div class="key-concept"><strong>Object key structure</strong> — impacts partitioning & performance, flat structure (no real folders), prefixes simulate hierarchy</div>
+                <div class="key-concept"><strong>5TB max object size</strong> — multipart upload required for anything >5GB</div>
+                <div class="key-concept"><strong>Strong read-after-write consistency</strong> — changed in Dec 2020, know the history</div>
+                <div class="key-concept"><strong>S3 ARN format</strong> — arn:aws:s3:::bucket-name/key — foundation for all IAM/policy work</div>
+                <div class="key-concept"><strong>Default limit of 100 buckets per account</strong> (soft limit, can request increase)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 2: Storage Classes & Lifecycle</h2><span class="dates">Mar 2-6 · Still Easing In</span></div>
+            <span class="week-progress" data-week="2">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Know every storage class cold. Understand lifecycle rules.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Mar 2 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1.5 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Storage classes overview: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">✍️ Notes (30 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">For each storage class write: durability, AZs, min storage duration, min object size, retrieval fee, best use case</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Mar 3 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Intelligent-Tiering deep dive: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">S3 Express One Zone: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-express-one-zone.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-express-one-zone.html</a> — understand directory buckets</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Mar 4 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Lifecycle configuration: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Lifecycle examples: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-configuration-examples.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-configuration-examples.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Upload objects to different storage classes via CLI</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Create a lifecycle rule: Standard → Standard-IA (30d) → Glacier (90d) → Expire (365d)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Mar 5 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (45 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Restoring Glacier objects: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Storage class analysis: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/analytics-storage-class.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/analytics-storage-class.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr 15 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Upload an object to Glacier Flexible Retrieval</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Initiate a restore with Standard retrieval</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Create lifecycle rule to clean up incomplete multipart uploads</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Set up S3 Analytics on a bucket</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Mar 6 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Review & Self-Test (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Without notes, write down ALL storage classes and their key characteristics</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="2"><span class="task-text">Re-read what you got wrong</span></div>
+                </div>
+                <div class="self-test">Quiz: Min storage duration for Standard-IA? · Cost of deleting Standard-IA after 10 days? · 3 Glacier Flexible retrieval speeds? · Direct transition Standard → Deep Archive? · Lifecycle transition waterfall?</div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">🔑 Storage Classes to Master</div>
+                <div class="key-concept"><strong>S3 Standard</strong> — 11 9s durability, ≥3 AZs, no min duration, no retrieval fee. Frequently accessed.</div>
+                <div class="key-concept"><strong>S3 Intelligent-Tiering</strong> — Auto-moves between tiers, small monitoring fee. Unknown access patterns.</div>
+                <div class="key-concept"><strong>S3 Standard-IA</strong> — 30 day min / 128KB min charge, per-GB retrieval. Infrequent but fast.</div>
+                <div class="key-concept"><strong>S3 One Zone-IA</strong> — 1 AZ, 20% cheaper than Standard-IA. Reproducible data.</div>
+                <div class="key-concept"><strong>Glacier Instant Retrieval</strong> — 90 day min, millisecond retrieval. Quarterly access.</div>
+                <div class="key-concept"><strong>Glacier Flexible Retrieval</strong> — 90 day min. Expedited (1-5 min), Standard (3-5 hrs), Bulk (5-12 hrs).</div>
+                <div class="key-concept"><strong>Glacier Deep Archive</strong> — 180 day min. Standard (12 hrs), Bulk (48 hrs). Cheapest.</div>
+                <div class="key-concept"><strong>S3 Express One Zone</strong> — Single AZ, directory buckets, single-digit ms latency. ML/analytics.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 3: Security Part 1 — Policies & Access Control</h2><span class="dates">Mar 9-13 · Ramping Up</span></div>
+            <span class="week-progress" data-week="3">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Security is the deepest S3 topic. This week covers policies and access control.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Mar 9 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Access control overview: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-access-control.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-access-control.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Bucket policies: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-policies.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-policies.html</a></span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Mar 10 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Bucket policy examples (read EVERY example): <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Write a bucket policy that denies all access except from your IP</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Write a bucket policy for cross-account access</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Write a bucket policy that enforces encryption on upload</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Mar 11 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">ACLs: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Object Ownership: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Block Public Access: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Enable Block Public Access at account level</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Set Object Ownership to BucketOwnerEnforced (disables ACLs)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Try to make a bucket public and see Block Public Access stop you</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Mar 12 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Access Points: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Access Grants: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-grants.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-grants.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Create an Access Point with a restrictive policy</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Access the bucket through the Access Point ARN</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Set up cross-account access using an Access Point</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Mar 13 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Presigned URLs: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (30 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Generate presigned URLs for GET and PUT using CLI and Boto3</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Test expiration behavior</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Test what happens when the generating user loses permissions</span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Review (30 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Draw the complete policy evaluation flow from memory</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="3"><span class="task-text">Write: when to use bucket policy vs IAM policy vs Access Points?</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">🔑 Policy Evaluation Model</div>
+                <pre>DENY always wins
+        ↓
+Bucket policy
+   + IAM policy
+   + ACL (legacy)
+   + S3 Block Public Access  ← override layer
+   + VPC Endpoint policy
+   = Final access decision</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 4 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 4: Security Part 2 — Encryption, Networking & Object Lock</h2><span class="dates">Mar 16-20</span></div>
+            <span class="week-progress" data-week="4">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Master encryption options, VPC endpoints, and data protection features.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Mar 16 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Encryption overview: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">SSE-S3: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">SSE-KMS: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">SSE-C: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerSideEncryptionCustomerKeys.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerSideEncryptionCustomerKeys.html</a></span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Mar 17 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (45 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Bucket Keys: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-key.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-key.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr 15 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Create a KMS customer managed key</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Enable SSE-KMS on a bucket with that key</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Enable Bucket Key and check CloudTrail for KMS API call reduction</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Mar 18 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">VPC endpoints for S3: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Gateway Endpoints: <a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html" target="_blank">https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Create a VPC Gateway Endpoint for S3</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Attach an endpoint policy restricting to a specific bucket</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Write a bucket policy denying access unless through VPC endpoint (aws:sourceVpce)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Mar 19 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Object Lock: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">MFA Delete: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Create a bucket with Object Lock enabled</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Test Governance mode — set retention, try to delete, then bypass</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Test Legal Hold — apply it, try to delete</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Mar 20 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Mega Review (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Write the complete encryption comparison from memory</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Draw the full access control model from memory</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="4"><span class="task-text">Quiz yourself on ALL Week 3 and 4 material</span></div>
+                </div>
+                <div class="self-test">Quiz: Can bucket policy override Block Public Access? · Presigned URL when user loses permissions? · SSE-KMS vs SSE-S3 for regulated workloads? · Gateway vs Interface endpoint? · Governance vs Compliance mode? · Can root delete Compliance mode objects?</div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">🔑 Encryption Models</div>
+                <div class="key-concept"><strong>SSE-S3</strong> — AWS manages everything, AES-256, zero effort, no per-key audit trail</div>
+                <div class="key-concept"><strong>SSE-KMS</strong> — You control key in KMS, CloudTrail audit trail, restrict who decrypts</div>
+                <div class="key-concept"><strong>SSE-C</strong> — You provide key every request, AWS never stores it</div>
+                <div class="key-concept"><strong>Client-Side Encryption</strong> — You encrypt before upload, AWS sees ciphertext only</div>
+                <div class="key-concept"><strong>Bucket Key</strong> — Secondary key from KMS, drastically reduces KMS API calls and cost</div>
+            </div>
+        </div>
+    </div>
+        <!-- WEEK 5 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 5: Versioning, Replication & Data Management</h2><span class="dates">Mar 23-27</span></div>
+            <span class="week-progress" data-week="5">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Master versioning behavior, replication rules, and batch operations.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Mar 23 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1.5 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Versioning: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html</a> — read every sub-page</span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">✍️ Notes (30 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Document versioning states: Unversioned → Enabled → Suspended (never back to Unversioned)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Document delete behavior: simple delete vs version-specific delete vs delete markers</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Mar 24 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Enable versioning on a bucket</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Upload the same key 5 times</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">List all versions via CLI: <code>aws s3api list-object-versions</code></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Delete the object (observe delete marker)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Restore by deleting the delete marker</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Permanently delete a specific version</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Suspend versioning, upload again, observe behavior</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Mar 25 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs — this is dense, read slowly):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Replication overview: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Replication config: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">What gets replicated: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-what-is-isnot-replicated.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-what-is-isnot-replicated.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Replication Time Control: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-time-control.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-time-control.html</a></span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Mar 26 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Set up CRR between two regions</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Set up SRR within the same region</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Upload objects to source and verify replication</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Delete an object in source — check if delete marker replicates</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Enable delete marker replication and test again</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Upload SSE-KMS encrypted object and verify replication (extra config needed)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Mar 27 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (45 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Batch Operations: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Batch Replication: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-batch-replication-batch.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-batch-replication-batch.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">S3 Inventory: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-inventory.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-inventory.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (45 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Set up S3 Inventory on a bucket</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">Run a Batch Operations job (tag all objects in a bucket)</span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Review (30 min):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">From memory: list everything that does NOT replicate</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="5"><span class="task-text">From memory: list all replication prerequisites</span></div>
+                </div>
+                <div class="self-test">Quiz: What happens to existing objects when you enable replication? · Can you replicate Glacier to Standard? · Delete marker replication default behavior? · Can you suspend and re-enable versioning? · SRR vs CRR use cases?</div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">🔑 Replication Rules to Know</div>
+                <div class="key-concept"><strong>Versioning MUST be enabled</strong> on both source and destination buckets</div>
+                <div class="key-concept"><strong>Does NOT replicate existing objects</strong> — use Batch Replication for that</div>
+                <div class="key-concept"><strong>Does NOT replicate delete markers by default</strong> — can be enabled</div>
+                <div class="key-concept"><strong>No chaining</strong> — A→B→C does NOT work automatically</div>
+                <div class="key-concept"><strong>SSE-C objects won't replicate</strong> — SSE-KMS requires extra config</div>
+                <div class="key-concept"><strong>RTC SLA</strong> — 99.99% of objects within 15 minutes</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 6 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 6: Performance & Optimization</h2><span class="dates">Mar 30 - Apr 3</span></div>
+            <span class="week-progress" data-week="6">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Understand performance limits, optimization techniques, and advanced features.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Mar 30 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Performance optimization: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Performance guidelines: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance-guidelines.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance-guidelines.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Multipart upload: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html</a></span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Mar 31 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Transfer Acceleration: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Enable Transfer Acceleration and test: <a href="https://s3-accelerate-speedtest.s3-accelerate.amazonaws.com/en/accelerate-speed-comparsion.html" target="_blank">https://s3-accelerate-speedtest.s3-accelerate.amazonaws.com/en/accelerate-speed-comparsion.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Perform a multipart upload via CLI</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Test byte-range fetches with CLI (<code>--range</code> flag)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Apr 1 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">S3 Select: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/selecting-content-from-objects.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/selecting-content-from-objects.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">S3 Object Lambda: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/transforming-objects.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/transforming-objects.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Upload a large CSV and query with S3 Select via CLI or Boto3</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Set up S3 Object Lambda Access Point to transform data on GET</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Apr 2 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Event Notifications: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventNotifications.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventNotifications.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">EventBridge integration: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ev-events.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/ev-events.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Set up S3 → Lambda event notification on object creation</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Set up S3 → EventBridge → Lambda with filtering rules</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Compare the two event approaches</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Apr 3 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Static website hosting: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Multi-Region Access Points: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiRegionAccessPoints.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiRegionAccessPoints.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Host a static website on S3 with index and error documents</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="6"><span class="task-text">Set up a Multi-Region Access Point across 2 regions</span></div>
+                </div>
+                <div class="self-test">Quiz: Per-prefix request rate limits? · When is Transfer Acceleration NOT beneficial? · Max parts in multipart upload? · Legacy notifications vs EventBridge? · Can S3 Select work on Glacier? · Object Lambda vs Lambda behind API?</div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">🔑 Performance Numbers to Memorize</div>
+                <div class="key-concept"><strong>3,500</strong> PUT/COPY/POST/DELETE per prefix per second</div>
+                <div class="key-concept"><strong>5,500</strong> GET/HEAD per prefix per second</div>
+                <div class="key-concept"><strong>Multipart: recommended >100MB, required >5GB</strong> — max 10,000 parts, each 5MB to 5GB</div>
+                <div class="key-concept"><strong>Transfer Acceleration</strong> uses CloudFront edge locations for cross-region uploads</div>
+                <div class="key-concept"><strong>Byte-range fetches</strong> for parallel downloads of large files</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 7 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 7: Monitoring, Logging & Cost</h2><span class="dates">Apr 6-10</span></div>
+            <span class="week-progress" data-week="7">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Know every way to monitor S3, understand costs deeply, memorize limits.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Apr 6 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Server access logging: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">CloudTrail for S3: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">CloudWatch metrics: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudwatch-monitoring.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudwatch-monitoring.html</a></span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Apr 7 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">S3 Storage Lens: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage_lens.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage_lens.html</a></span></div>
+                </div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Hands-On (1 hr):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Enable server access logging on a bucket</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Enable CloudTrail data events for S3</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Explore the default Storage Lens dashboard</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Create a custom Storage Lens configuration</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Enable CloudWatch request metrics on a bucket</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Apr 8 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read & Study (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">S3 pricing (read EVERY section): <a href="https://aws.amazon.com/s3/pricing/" target="_blank">https://aws.amazon.com/s3/pricing/</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">S3 quotas and limits: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Take notes on all cost drivers: storage, requests, transfer, retrieval, early deletion, replication</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Apr 9 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">S3 FAQ — read the WHOLE thing (gold for SME): <a href="https://aws.amazon.com/s3/faqs/" target="_blank">https://aws.amazon.com/s3/faqs/</a></span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Apr 10 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Review (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">From memory: explain difference between server access logs, CloudTrail, and CloudWatch</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">List all the ways S3 costs you money</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">List all S3 limits you can remember</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="7"><span class="task-text">Quiz yourself on FAQ edge cases</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">🔑 Monitoring Comparison</div>
+                <div class="key-concept"><strong>Server Access Logs</strong> — best-effort delivery, detailed per-request, delivered to S3 bucket, free (pay for storage)</div>
+                <div class="key-concept"><strong>CloudTrail</strong> — guaranteed delivery, API-level events, integrates with auditing, data events cost extra</div>
+                <div class="key-concept"><strong>CloudWatch Metrics</strong> — bucket-level (size, count) free; request-level requires enabling and costs money</div>
+                <div class="key-concept"><strong>Storage Lens</strong> — org-wide visibility, usage analytics, optimization recommendations, 28 free metrics</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 8 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 8: Fill the Gaps & Go Beyond Docs</h2><span class="dates">Apr 13-17</span></div>
+            <span class="week-progress" data-week="8">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Cover remaining features, learn from re:Invent talks, community, and whitepapers.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Apr 13 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Requester Pays: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/RequesterPaysBuckets.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/RequesterPaysBuckets.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Mountpoint for S3: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mountpoint.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/mountpoint.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">S3 on Outposts: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/S3onOutposts.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/S3onOutposts.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Browse TOC for any sections you haven't read yet — fill gaps</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Apr 14 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🎥 Watch (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Watch most recent re:Invent S3 deep dive talk (300/400 level) on YouTube</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Take notes on anything the docs didn't emphasize</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Watch a second re:Invent talk (security or performance focused)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Apr 15 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📖 Read (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Well-Architected Framework (S3 best practices): <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" target="_blank">https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">AWS Storage blog posts from last 12 months: <a href="https://aws.amazon.com/blogs/storage/" target="_blank">https://aws.amazon.com/blogs/storage/</a></span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Apr 16 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🌐 Community Learning (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Browse top S3 questions on Stack Overflow</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Browse AWS re:Post for S3: <a href="https://repost.aws/tags/TAcdABo6cdTMunMxMkDM_5dg/amazon-s3" target="_blank">https://repost.aws/tags/TAcdABo6cdTMunMxMkDM_5dg/amazon-s3</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Note the "gotchas" that come up repeatedly in real-world problems</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Apr 17 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📄 Whitepapers (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">S3 security best practices whitepaper: <a href="https://aws.amazon.com/whitepapers/" target="_blank">https://aws.amazon.com/whitepapers/</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="8"><span class="task-text">Read any relevant AWS whitepapers on storage architecture</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- WEEK 9 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 9: Build & Teach</h2><span class="dates">Apr 20-24</span></div>
+            <span class="week-progress" data-week="9">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Apply everything by building a real project and teaching others. This is where SME knowledge solidifies.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Apr 20 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Build: Secure Multi-Tenant Document System — Part 1 (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Design the architecture on paper — draw out all S3 features you'll use</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Create buckets with SSE-KMS encryption using per-tenant customer managed keys</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Enable versioning and Object Lock (Compliance mode) for regulatory data</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Set up Access Points per tenant with restrictive policies</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Apr 21 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Build: Part 2 (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Configure lifecycle policies: Standard → IA (30d) → Glacier (90d) → Expire (365d)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Set up CRR to a DR region with Replication Time Control</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Create event notifications: S3 → EventBridge → Lambda for document processing</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Implement presigned URLs for secure upload/download via a simple script</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Apr 22 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🛠️ Build: Part 3 (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Enable CloudTrail data events + server access logging</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Set up Storage Lens dashboard for the project</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Create a VPC Gateway Endpoint and restrict bucket access to VPC only</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Do a cost estimation for the entire project (storage, requests, transfer, replication)</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Apr 23 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">📝 Teach It (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Write a blog post, internal wiki, or presentation explaining S3 architecture</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Explain your project architecture to a colleague (or rubber duck)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Document every design decision and WHY you made it</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday Apr 24 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">💥 Edge Cases & Troubleshooting (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Read troubleshooting docs: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/troubleshooting.html" target="_blank">https://docs.aws.amazon.com/AmazonS3/latest/userguide/troubleshooting.html</a></span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Deliberately break things in your lab and fix them</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Create access denied scenarios and debug them</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="9"><span class="task-text">Test lifecycle rule conflicts and edge cases</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEEK 10 -->
+    <div class="week-card">
+        <div class="week-header" onclick="toggleWeek(this)">
+            <div><h2>Week 10: Final Review & Self-Test</h2><span class="dates">Apr 27 - May 1 · 🎯 Finish Line</span></div>
+            <span class="week-progress" data-week="10">0/0</span>
+            <span class="toggle">▼</span>
+        </div>
+        <div class="week-content">
+            <div class="week-goal">Goal: Review everything, test yourself brutally, fill remaining gaps. Emerge as an S3 SME.</div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Monday Apr 27 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Full Review — Foundations & Storage (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Go through ALL your notes from Week 1 and Week 2</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Re-read any section you're fuzzy on</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">From memory: list all storage classes with key characteristics</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Tuesday Apr 28 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Full Review — Security (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Go through ALL your notes from Week 3 and Week 4</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Draw the complete security model from memory (policies, ACLs, Block Public Access, encryption, VPC endpoints, Access Points)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Write the encryption comparison from memory</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Wednesday Apr 29 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Full Review — Features & Performance (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Go through ALL your notes from Week 5, 6, and 7</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">From memory: list everything that does NOT replicate</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">From memory: explain all performance optimization techniques</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">From memory: explain monitoring options and when to use each</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Thursday Apr 30 (2 hrs)</div>
+                <div class="activity-group">
+                    <div class="activity-label">🧪 Ultimate Self-Test — No Notes Allowed (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Explain S3's consistency model in writing</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">List all storage classes with characteristics</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Draw the complete security and access control model</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Explain all encryption options and when to use each</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Explain replication: prerequisites, what replicates, what doesn't</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Explain versioning states and delete behavior</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">List all performance optimization techniques with numbers</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Explain monitoring options differences</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Estimate cost for a given scenario from memory</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">List 10 S3 limits from memory</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Explain 5 common S3 "gotchas" from memory</span></div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-title">📅 Friday May 1 (2 hrs) 🎉</div>
+                <div class="activity-group">
+                    <div class="activity-label">🔄 Gap Fill & Celebrate (2 hrs):</div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Review your Thursday self-test answers against the docs</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Deep read anything you got wrong</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">Plan your ongoing learning (new features, re:Invent, blog posts)</span></div>
+                    <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="10"><span class="task-text">🎉 You're an S3 SME. Celebrate.</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ONGOING -->
+    <div class="ongoing-section">
+        <h2>🔄 Ongoing After May 1</h2>
+
+        <div class="day-section">
+            <div class="day-title">Daily (15-30 min)</div>
+            <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="ongoing"><span class="task-text">Subscribe to AWS What's New RSS filtered for S3</span></div>
+            <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="ongoing"><span class="task-text">Follow the AWS Storage blog: <a href="https://aws.amazon.com/blogs/storage/" target="_blank">https://aws.amazon.com/blogs/storage/</a></span></div>
+            <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="ongoing"><span class="task-text">Answer S3 questions on re:Post or Stack Overflow (teaching = deepening)</span></div>
+        </div>
+
+        <div class="day-section">
+            <div class="day-title">Monthly</div>
+            <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="ongoing"><span class="task-text">Re-read one section of the docs you haven't touched in a while</span></div>
+            <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="ongoing"><span class="task-text">Build something new with S3</span></div>
+            <div class="task-item" onclick="toggleTask(this)"><input type="checkbox" class="task-check" data-week="ongoing"><span class="task-text">Watch any new AWS talks on S3</span></div>
+        </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-section">
+        <h2>📊 Summary</h2>
+        <div class="summary-item"><strong>Weeks 1-2 (Feb 23 - Mar 6):</strong> Easy ramp up, build foundations (~1.5 hrs reading, 30 min hands-on/day)</div>
+        <div class="summary-item"><strong>Weeks 3-4 (Mar 9-20):</strong> Security deep dive, intensity increases (~1 hr reading, 1 hr hands-on/day)</div>
+        <div class="summary-item"><strong>Weeks 5-6 (Mar 23 - Apr 3):</strong> Features and performance (balanced reading and hands-on)</div>
+        <div class="summary-item"><strong>Weeks 7-8 (Apr 6-17):</strong> Monitoring, cost, and beyond-the-docs resources</div>
+        <div class="summary-item"><strong>Week 9 (Apr 20-24):</strong> Build and teach</div>
+        <div class="summary-item"><strong>Week 10 (Apr 27 - May 1):</strong> Review and self-test</div>
+        <div class="summary-item"><strong>After May 1:</strong> Ongoing maintenance</div>
+        <div class="summary-item" style="margin-top: 15px; color: #4ecca3; font-weight: bold;">Total investment: ~100 hours over 10 weeks</div>
+        <div class="summary-item" style="color: #ff9900; font-weight: bold;">📍 Location: Kraaifontein, Cape Town 🇿🇦</div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()">🗑️ Reset All Progress</button>
+
+</div>
+
+<script>
+    function loadState() {
+        const saved = localStorage.getItem('s3-sme-plan-2026');
+        if (saved) {
+            const state = JSON.parse(saved);
+            document.querySelectorAll('.task-check').forEach((cb, i) => {
+                if (state.tasks && state.tasks[i]) {
+                    cb.checked = true;
+                    cb.closest('.task-item').classList.add('completed');
+                }
+            });
+            document.querySelectorAll('.week-check').forEach((cb, i) => {
+                if (state.weeks && state.weeks[i]) {
+                    cb.checked = true;
+                    cb.closest('.timeline-item').classList.add('completed');
+                }
+            });
+        }
+        updateProgress();
+    }
+
+    function saveState() {
+        const state = { tasks: [], weeks: [] };
+        document.querySelectorAll('.task-check').forEach(cb => {
+            state.tasks.push(cb.checked);
+        });
+        document.querySelectorAll('.week-check').forEach(cb => {
+            state.weeks.push(cb.checked);
+        });
+        localStorage.setItem('s3-sme-plan-2026', JSON.stringify(state));
+    }
+
+    function toggleTask(el) {
+        if (event.target.tagName === 'A') return;
+        const cb = el.querySelector('input[type="checkbox"]');
+        if (event.target !== cb) {
+            cb.checked = !cb.checked;
+        }
+        el.classList.toggle('completed', cb.checked);
+        saveState();
+        updateProgress();
+    }
+
+    function toggleWeek(header) {
+        const content = header.nextElementSibling;
+        const toggle = header.querySelector('.toggle');
+        content.classList.toggle('show');
+        toggle.classList.toggle('open');
+    }
+
+    function updateProgress() {
+        const allTasks = document.querySelectorAll('.task-check');
+        const checkedTasks = document.querySelectorAll('.task-check:checked');
+        const total = allTasks.length;
+        const done = checkedTasks.length;
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressText').textContent = done + ' / ' + total + ' tasks completed (' + pct + '%)';
+
+        for (let w = 1; w <= 10; w++) {
+            const weekTasks = document.querySelectorAll('.task-check[data-week="' + w + '"]');
+            const weekDone = document.querySelectorAll('.task-check[data-week="' + w + '"]:checked');
+            const weekLabel = document.querySelector('.week-progress[data-week="' + w + '"]');
+            if (weekLabel) {
+                weekLabel.textContent = weekDone.length + '/' + weekTasks.length;
+            }
+        }
+    }
+
+    document.querySelectorAll('.week-check').forEach(cb => {
+        cb.addEventListener('change', function(e) {
+            e.stopPropagation();
+            this.closest('.timeline-item').classList.toggle('completed', this.checked);
+            saveState();
+        });
+    });
+
+    document.querySelectorAll('.task-text a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+
+    function resetAll() {
+        if (confirm('Are you sure you want to reset ALL progress? This cannot be undone.')) {
+            localStorage.removeItem('s3-sme-plan-2026');
+            document.querySelectorAll('.task-check, .week-check').forEach(cb => {
+                cb.checked = false;
+            });
+            document.querySelectorAll('.task-item, .timeline-item').forEach(el => {
+                el.classList.remove('completed');
+            });
+            updateProgress();
+        }
+    }
+
+    loadState();
+</script>
+</body>
+</html>
